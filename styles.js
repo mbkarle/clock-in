@@ -9,13 +9,13 @@ export default styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    buttonDim: {
+    clockDim: {
         padding: 5,
         width: 100,
         height: 100,
         borderRadius: 200,
     },
-    button: {
+    clock: {
         alignItems: 'center',
         backgroundColor: "#2d2d2d",
         justifyContent: "center",
@@ -26,7 +26,7 @@ export default styles = StyleSheet.create({
         borderColor: "black",
         borderWidth: 2,
     },
-    textButton: {
+    clockText: {
         color: "#f0fff0",
     },
     separator: {

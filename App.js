@@ -3,14 +3,16 @@ import { Animated, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react
 import ErrorBoundary from 'react-native-error-boundary';
 import styles from "./styles.js";
 
+/*----------Thin divider element----------*/
 function Separator() {
     return <View style={styles.separator} />;
 }
 
-
+/*----------Clock helper function to pad times with 0s----------*/
 const formatNumber = number => `0${number}`.slice(-2);
 
-function convertSeconds(seconds) {
+/*----------Clock helper functions to convert seconds to HH:MM:SS----------*/
+const convertSeconds = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
     const remainder = seconds % 3600;
 
@@ -20,6 +22,12 @@ function convertSeconds(seconds) {
     return { hrs: formatNumber(hrs), mins: formatNumber(mins), secs: formatNumber(secs) };
 }
 
+/*----------The Clock----------*/
+/*TODO:
+ * Change seconds to calculation relative to a start time
+ * Store start time so clock accurately gets time when app closed and reopened
+ * Work design
+ */
 function Clock(props) {
    
     const [time, setTime] = useState(0); //state variable to track time in seconds
@@ -31,19 +39,19 @@ function Clock(props) {
     const toggle = () => {
         setActive(!isActive); //toggle paused/unpaused
         
-        if(!isActive) {
+        if(!isActive) { //animate out shadow if clock active TODO: isActive behavior contrary to expectation
             Animated.timing(shadowRadius, {
                 toValue: 10,
                 duration: 1000,
                 useNativeDriver: true
             }).start()
         }
-        else{
+        else{ //if clock paused/inactive git rid of shadow entirely
             shadowRadius.setValue(0)
         }
     }
 
-    useEffect(() => {
+    useEffect(() => { //if active, run timer
         let interval = null;
         if(isActive) {
             interval = setInterval( () => {
@@ -52,23 +60,25 @@ function Clock(props) {
         }
 
         return () => clearInterval(interval);
-    }, [isActive, time]);
+    }, [isActive, time]); //array parameter specifies effect only used on change of isactive and time
 
     return (
         <TouchableOpacity
-            style={[styles.button, styles.buttonDim, {marginTop: 50, shadowRadius: shadowRadius}]}
+            style={[styles.clock, styles.clockDim, {marginTop: 50, shadowRadius: shadowRadius}]}
             onPress={toggle}
         >
-            <Text style={styles.textButton}>{hrs}:{mins}:{secs}</Text>
+            <Text style={styles.clockText}>{hrs}:{mins}:{secs}</Text>
         </TouchableOpacity>
     );
 }
 
+/*----------The full app view----------*/
+//Uses error boundary for display in case of javascript error
 export default function App() {
   return (
     <ErrorBoundary>
         <View style={styles.container}>
-          <Text>Big Balled Boys</Text>
+          <Text>Gened Final</Text>
           <Separator />
           <Clock />
         </View>
