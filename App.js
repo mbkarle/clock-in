@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { Animated, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { Animated, Text, View, TouchableOpacity, Alert } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import styles from "./styles.js";
+import { Separator, HomeButton } from "./HelperUI.js";
+import Profile from "./Profile.js";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-/*----------Thin divider element----------*/
-function Separator() {
-    return <View style={styles.separator} />;
-}
 
 /*----------Clock helper function to pad times with 0s----------*/
 const formatNumber = number => `0${number}`.slice(-2);
@@ -72,17 +72,38 @@ function Clock(props) {
     );
 }
 
-/*----------The full app view----------*/
+/*----------Activity----------*/
+//TODO: Move to own file with internal components
+//Generalize to display activity info for any activity
+function Activity({ navigation }) {
+    
+    return (
+        <View style={styles.container}>
+          <Text style={{marginTop: 25}}>Gened Final</Text>
+          <Separator />
+          <Clock />
+            <HomeButton />
+        </View>
+    );
+}
+
+
+/*==========The full app view==========*/
+
+/*----------Navigator for Pages----------*/
+const Stack = createStackNavigator();
+
 //Uses error boundary for display in case of javascript error
 export default function App() {
   return (
     <ErrorBoundary>
-        <View style={styles.container}>
-          <Text>Gened Final</Text>
-          <Separator />
-          <Clock />
-        </View>
-      </ErrorBoundary>
+      <NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen name="Activity" component={Activity} />
+            <Stack.Screen name="Profile" component={Profile} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ErrorBoundary>
 
   );
 }
