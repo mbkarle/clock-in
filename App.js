@@ -22,24 +22,33 @@ const convertSeconds = (seconds) => {
     return { hrs: formatNumber(hrs), mins: formatNumber(mins), secs: formatNumber(secs) };
 }
 
+const getCurrentTime = () => {
+  var t1 = new Date();
+  var time = t1.getTime() / 1000;
+  return Math.floor(time);
+}
+
 /*----------The Clock----------*/
 /*TODO:
- * Change seconds to calculation relative to a start time
- * Store start time so clock accurately gets time when app closed and reopened
+ * Store start time persistantly
  * Work design
  */
 function Clock(props) {
-   
+
     const [time, setTime] = useState(0); //state variable to track time in seconds
+    const [acumulatedTime, setAcumulatedTime] = useState(0); //state variable to track time at start of each active phase
+    const [endPauseTime, setEndPauseTime] = useState(getCurrentTime()); ////state variable to track paused time in seconds
     const [isActive, setActive] = useState(false); //state variable to track if clock is unpaused
     const { hrs, mins, secs } = convertSeconds(time); //formatted time variables
 
     const shadowRadius = useRef(new Animated.Value(0)).current;
 
     const toggle = () => {
+
         setActive(!isActive); //toggle paused/unpaused
-        
+
         if(!isActive) { //animate out shadow if clock active TODO: isActive behavior contrary to expectation
+            setEndPauseTime(getCurrentTime()); //record start time of active phase
             Animated.timing(shadowRadius, {
                 toValue: 10,
                 duration: 1000,
@@ -47,7 +56,8 @@ function Clock(props) {
             }).start()
         }
         else{ //if clock paused/inactive git rid of shadow entirely
-            shadowRadius.setValue(0)
+            shadowRadius.setValue(0);
+            setAcumulatedTime(time);
         }
     }
 
@@ -55,8 +65,8 @@ function Clock(props) {
         let interval = null;
         if(isActive) {
             interval = setInterval( () => {
-                setTime(time + 1);
-            }, 1000);
+                setTime(acumulatedTime + (getCurrentTime()-endPauseTime)); //updates time every 100ms
+            }, 100);
         }
 
         return () => clearInterval(interval);
@@ -76,7 +86,7 @@ function Clock(props) {
 //TODO: Move to own file with internal components
 //Generalize to display activity info for any activity
 function Activity({ navigation }) {
-    
+
     return (
         <View style={styles.container}>
           <Text style={{marginTop: 25}}>Gened Final</Text>
