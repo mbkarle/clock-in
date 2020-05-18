@@ -40,6 +40,7 @@ export default function Profile({ navigation }) {
         });
     }
 
+
     return (
         <ErrorBoundary>
             <View style={styles.container}>
@@ -54,7 +55,10 @@ export default function Profile({ navigation }) {
                         onPress={toActivity}
                     />
                 </View>
-                <AnchoredButton src="plus" />
+                <AnchoredButton 
+                    src="plus" 
+                    onPress={() => { navigation.navigate("Modal") }}
+                />
             </View>
         </ErrorBoundary>
     );

@@ -6,6 +6,7 @@ import { Separator, HomeButton } from "./HelperUI.js";
 import Profile from "./Profile.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Modal from "./Modal.js";
 
 
 /*----------Clock helper function to pad times with 0s----------*/
@@ -101,14 +102,12 @@ function Activity({ navigation }) {
 /*==========The full app view==========*/
 
 /*----------Navigator for Pages----------*/
-const Stack = createStackNavigator();
+const MainStack = createStackNavigator(); //the card based stack containing main app screens
+const RootStack = createStackNavigator(); //the modal stack containing main stack and modal
 
-//Uses error boundary for display in case of javascript error
-export default function App() {
-  return (
-    <ErrorBoundary>
-      <NavigationContainer>
-        <Stack.Navigator
+function MainStackScreen() {
+    return (
+        <MainStack.Navigator
             screenOptions={{
                 headerStyle: {
                     backgroundColor: Colors.background,
@@ -117,10 +116,26 @@ export default function App() {
             }}
             initialRouteName="Profile"
         >
-            <Stack.Screen name="Activity" component={Activity} />
-            <Stack.Screen name="Profile" component={Profile} />
-        </Stack.Navigator>
-      </NavigationContainer>
+            <MainStack.Screen name="Activity" component={Activity} />
+            <MainStack.Screen name="Profile" component={Profile} />
+        </MainStack.Navigator>
+    );
+}
+
+//Uses error boundary for display in case of javascript error
+export default function App() {
+  return (
+    <ErrorBoundary>
+        <NavigationContainer>
+            <RootStack.Navigator mode="modal">
+                <RootStack.Screen
+                    name="Main"
+                    component={MainStackScreen}
+                    options={{ headerShown: false }}
+                />
+                <RootStack.Screen name="Modal" component={Modal} options={{ headerShown: false }}/>
+            </RootStack.Navigator>
+        </NavigationContainer>
     </ErrorBoundary>
 
   );
