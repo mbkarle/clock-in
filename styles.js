@@ -1,31 +1,39 @@
 import {StyleSheet, Dimensions} from 'react-native';
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+
+export const width = Dimensions.get('window').width;
+export const height = Dimensions.get('window').height;
 
 /*----------Default Color Palette----------*/
-const colors = {};
-colors.background = "#121212";
-colors.primary = "#BB86FC";
-colors.secondary = "#03DAC6";
-colors.error = "#CF6679";
-colors.backgroundText = "#FFF";
+export const Colors = {
+    background: "#121212",
+    backAuxiliary: "#2d2d2d",
+    primary: "#BB86FC",
+    secondary: "#03DAC6",
+    error: "#CF6679",
+    backgroundText: "#FFF",
+}
 
-export default styles = StyleSheet.create({
+export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.background,
         alignItems: 'center',
         justifyContent: 'center',
     },
+    activityTitle: {
+        marginTop: 25,
+        color: Colors.backgroundText,
+        fontSize: 20,
+    },
     clockDim: {
         padding: 5,
-        width: 100,
-        height: 100,
-        borderRadius: 200,
+        width: 150,
+        height: 150,
+        borderRadius: 300,
     },
     clock: {
         alignItems: 'center',
-        backgroundColor: "#2d2d2d",
+        backgroundColor: Colors.backAuxiliary,
         justifyContent: "center",
         margin: 3,
         shadowColor: '#9400D3',
@@ -35,27 +43,32 @@ export default styles = StyleSheet.create({
         borderWidth: 2,
     },
     clockText: {
-        color: "#f0fff0",
+        color: Colors.backgroundText,
+        fontSize: 22,
     },
     separator: {
         marginVertical: 8,
-        borderBottomColor: '#737373',
-        backgroundColor: "#000000",
+        borderBottomColor: Colors.backgroundText,
         borderBottomWidth: StyleSheet.hairlineWidth,
         width: (width - 100),
     },
     primaryButton: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: colors.primary,
-        width: 100,
-        height: 50,
-        borderRadius: 25,
+        backgroundColor: Colors.primary,
+        borderRadius: 64,
+        padding: 20,
     },
-    bottomView: {
+    primaryButtonIcon: {
+        width: 32,
+        height: 32,
+    },
+
+    anchoredView: {
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 35,
         alignItems: 'flex-end',
+        marginLeft: width-134,
     }
 });

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { Animated, Text, View, TouchableOpacity, Alert } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
-import styles from "./styles.js";
+import styles, {Colors} from "./styles.js";
 import { Separator, HomeButton } from "./HelperUI.js";
 import Profile from "./Profile.js";
 import { NavigationContainer } from "@react-navigation/native";
@@ -89,7 +89,7 @@ function Activity({ navigation }) {
 
     return (
         <View style={styles.container}>
-          <Text style={{marginTop: 25}}>Gened Final</Text>
+          <Text style={styles.activityTitle}>Gened Final</Text>
           <Separator />
           <Clock />
             <HomeButton />
@@ -108,7 +108,15 @@ export default function App() {
   return (
     <ErrorBoundary>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: Colors.background,
+                },
+                headerTintColor: Colors.primary,
+            }}
+            initialRouteName="Profile"
+        >
             <Stack.Screen name="Activity" component={Activity} />
             <Stack.Screen name="Profile" component={Profile} />
         </Stack.Navigator>
