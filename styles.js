@@ -21,9 +21,12 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     activityTitle: {
-        marginTop: 25,
+        marginTop: 50,
         color: Colors.backgroundText,
-        fontSize: 20,
+        fontSize: 30,
+        alignSelf: "center",
+        marginLeft: 25,
+        fontWeight: 'bold',
     },
     clockDim: {
         padding: 5,
@@ -66,10 +69,10 @@ export default StyleSheet.create({
 
     anchoredView: {
         flex: 1,
-        justifyContent: 'flex-end',
+        flexDirection: "row",
+        justifyContent: 'center',
         marginBottom: 35,
         alignItems: 'flex-end',
-        marginLeft: width-134,
     },
 
     activityListText: {
@@ -78,5 +81,29 @@ export default StyleSheet.create({
       color: Colors.backgroundText,
       fontSize: 30,
       backgroundColor: Colors.background
-    }
+    },
+
+    floatRight: {
+        marginLeft: width/2
+    },
+
+    floatLeft: {
+        marginRight: width/2
+    },
+
+    profileTitle: {
+        color: Colors.backgroundText,
+        fontSize: 24,
+    },
+
+    singleInput: {
+        borderColor: Colors.backAuxiliary,
+        borderWidth: 2,
+        borderRadius: 20,
+        width: width - 40,
+        padding: 15,
+        color: Colors.backgroundText,
+        alignItems: "flex-start",
+        justifyContent: "center",
+    },
 });

@@ -1,9 +1,9 @@
 /*==========Home of globally useful UI components==========*/
 
 /*----------Imports----------*/
-import React from 'react';
-import { Text, View, TouchableOpacity, Alert, Image, FlatList, StyleSheet } from 'react-native';
-import styles from "./styles.js";
+import React, {useState} from 'react';
+import { Text, View, TouchableOpacity, Alert, Image, TextInput, FlatList } from 'react-native';
+import styles, {Colors, width} from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import Datastore from 'react-native-local-mongodb';
 import { List, ListItem } from 'react-native-elements';
@@ -14,15 +14,18 @@ import { List, ListItem } from 'react-native-elements';
 const ImageSources = {
     home: require("./assets/home.png"),
     plus: require("./assets/plus.png"),
+    x: require("./assets/x-icon.png"),
 };
 
 /*==========Database Related Content==========*/
 
-/*----------The default database key----------*/
-const asyncStorageKey = "Overclocked";
+/*----------The default database keys----------*/
+const usersStorageKey = "Users";
+const activitiesStorageKey = "Activities";
 
-/*----------The default database----------*/
-export const db = new Datastore({ filename: asyncStorageKey });
+/*----------Users Collection----------*/
+export const usersdb = new Datastore({ filename: usersStorageKey });
+export const activitiesdb = new Datastore({ filename: activitiesStorageKey });
 
 
 /*==========Graphic Aids==========*/
@@ -77,6 +80,37 @@ export function DisplayWrapper({ children, visibility }) {
     );
 }
 
+export function SingleInput(props) {
+    const placeholder = props.placeholder || "Type something...";
+    const [value, setValue] = useState(placeholder);
+    const [clearOnFocus, setClearOnFocus] = useState(true);
+    const [borderColor, setBorderColor] = useState(Colors.backAuxiliary);
+    
+    return (
+        <TextInput
+            style={[styles.singleInput, {borderColor: borderColor}]}
+            onChangeText={text => {
+                setClearOnFocus(false);
+                setValue(text);
+                if(props.parentHandler)
+                    props.parentHandler(text);
+            }}
+            onFocus={() => setBorderColor(Colors.secondary)}
+            onBlur={() => {
+                setBorderColor(Colors.backAuxiliary);
+                if(value == "") 
+                    setValue(placeholder);
+            }}
+            value={value}
+            clearTextOnFocus={clearOnFocus}
+            clearButtonMode="always"
+            keyboardAppearance="dark"
+            returnKeyType="done"
+            {...props}
+        />
+   );
+    
+}
 
 /*==========General Buttons==========*/
 
@@ -106,8 +140,10 @@ export function PrimaryButton(props) {
 }
 
 export function AnchoredButton(props) {
+    const horizAlign = props.align || "right";
+    const marginKey = (horizAlign == "right") ? "marginLeft" : "marginRight";
     return (
-        <View style={styles.anchoredView}>
+        <View style={[styles.anchoredView, {[marginKey]: width - 134}]}>
             <PrimaryButton {...props} />
         </View>
     );
