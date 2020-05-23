@@ -2,14 +2,16 @@
 
 /*----------Imports----------*/
 import React from 'react';
-import { Text, View, TouchableOpacity, Alert, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Alert, Image, FlatList, StyleSheet } from 'react-native';
 import styles from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import Datastore from 'react-native-local-mongodb';
+import { List, ListItem } from 'react-native-elements';
+
 
 /*----------Images----------*/
 const ImageSources = {
-    home: require("./assets/home.png"),   
+    home: require("./assets/home.png"),
     plus: require("./assets/plus.png"),
 };
 
@@ -23,6 +25,19 @@ export const db = new Datastore({ filename: asyncStorageKey });
 
 
 /*==========Graphic Aids==========*/
+
+export function ActivityBox(props) {
+
+  const listData = props.list.map((l) => ({key: l}));
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={listData}
+        renderItem={({item}) => <Text style={styles.activityListText}>{item.key}</Text>}
+      />
+    </View> )
+}
 
 /*----------Thin divider element----------*/
 export function Separator() {
@@ -55,7 +70,7 @@ export function PrimaryButton(props) {
             onPress={props.onPress}
         >
             <DisplayWrapper visibility={hasImage}>
-                <Image style={styles.primaryButtonIcon} source={imagePath} /> 
+                <Image style={styles.primaryButtonIcon} source={imagePath} />
             </DisplayWrapper>
 
             <DisplayWrapper visibility={hasText}>

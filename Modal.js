@@ -4,7 +4,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import styles from './styles.js';
-import { HomeButton } from "./HelperUI.js";
+import { HomeButton, ActivityBox } from "./HelperUI.js";
 
 export default function Modal({ navigation }) {
 

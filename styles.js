@@ -70,5 +70,13 @@ export default StyleSheet.create({
         marginBottom: 35,
         alignItems: 'flex-end',
         marginLeft: width-134,
+    },
+
+    activityListText: {
+      padding: 10,
+      alignItems: 'center',
+      color: Colors.backgroundText,
+      fontSize: 30,
+      backgroundColor: Colors.background
     }
 });

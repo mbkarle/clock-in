@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import { Animated, Text, View, TouchableOpacity, Alert } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import styles, {Colors} from "./styles.js";
-import { Separator, HomeButton } from "./HelperUI.js";
+import { Separator, HomeButton, ActivityBox } from "./HelperUI.js";
 import Profile from "./Profile.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
