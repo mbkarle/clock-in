@@ -60,7 +60,7 @@ export default function Profile({ navigation }) {
                         onPress={toActivity}
                     />
                 </View>
-                <ActivityBox list = {list}/>
+                <ActivityBox list = {list} route="Activity"/>
                 <AnchoredButton
                     src="plus"
                     onPress={() => { navigation.navigate("Modal") }}

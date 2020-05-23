@@ -9,6 +9,7 @@ import Datastore from 'react-native-local-mongodb';
 import { List, ListItem } from 'react-native-elements';
 
 
+
 /*----------Images----------*/
 const ImageSources = {
     home: require("./assets/home.png"),
@@ -28,16 +29,40 @@ export const db = new Datastore({ filename: asyncStorageKey });
 
 export function ActivityBox(props) {
 
-  const listData = props.list.map((l) => ({key: l}));
+  if (!props.route) { //props.route undefined so returns false, for simple list
+    const listData = props.list.map((l) => ({key: l}));
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={listData}
-        renderItem={({item}) => <Text style={styles.activityListText}>{item.key}</Text>}
-      />
-    </View> )
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={listData}
+          renderItem={({item}) => <Text style={styles.activityListText}>{item.key}</Text>}
+        />
+      </View> )
+  } else { //if route is provided in the props, interactive list
+
+    const listData = props.list.map((l) => ({key: l}));
+    const navigator = useNavigation();
+
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={listData}
+          renderItem={({item}) =>
+          <Text
+          style={styles.activityListText}
+          onPress={() => { navigator.navigate(props.route, {activity: item.key}) }}>
+          {item.key}
+          </Text>}
+        />
+      </View> )
+
+
+  }
+
 }
+
+
 
 /*----------Thin divider element----------*/
 export function Separator() {

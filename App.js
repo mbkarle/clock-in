@@ -86,11 +86,13 @@ function Clock(props) {
 /*----------Activity----------*/
 //TODO: Move to own file with internal components
 //Generalize to display activity info for any activity
-function Activity({ navigation }) {
+function Activity({ route, navigation }) { //route allows for passing of object when this route callled
+
+    const activityTitle = route.params.activity; //Text at top of clock matches activity
 
     return (
         <View style={styles.container}>
-          <Text style={styles.activityTitle}>Gened Final</Text>
+          <Text style={styles.activityTitle}>{activityTitle}</Text>
           <Separator />
           <Clock />
             <HomeButton />
