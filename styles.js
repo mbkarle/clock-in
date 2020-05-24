@@ -25,8 +25,15 @@ export default StyleSheet.create({
         color: Colors.backgroundText,
         fontSize: 30,
         alignSelf: "center",
-        marginLeft: 25,
         fontWeight: 'bold',
+    },
+    modalTitle: {
+        marginTop: 50,
+        color: Colors.backgroundText,
+        fontSize: 35,
+        alignSelf: "flex-start",
+        marginLeft: 20,
+        fontWeight: "bold",
     },
     clockDim: {
         padding: 5,
@@ -80,7 +87,6 @@ export default StyleSheet.create({
       alignItems: 'center',
       color: Colors.backgroundText,
       fontSize: 30,
-      backgroundColor: Colors.background
     },
 
     floatRight: {

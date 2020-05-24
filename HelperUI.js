@@ -6,8 +6,6 @@ import { Text, View, TouchableOpacity, Alert, Image, TextInput, FlatList } from 
 import styles, {Colors, width} from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import Datastore from 'react-native-local-mongodb';
-import { List, ListItem } from 'react-native-elements';
-
 
 
 /*----------Images----------*/
@@ -30,42 +28,54 @@ export const activitiesdb = new Datastore({ filename: activitiesStorageKey });
 
 /*==========Graphic Aids==========*/
 
-export function ActivityBox(props) {
-
-  if (!props.route) { //props.route undefined so returns false, for simple list
-    const listData = props.list.map((l) => ({key: l}));
-
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={listData}
-          renderItem={({item}) => <Text style={styles.activityListText}>{item.key}</Text>}
-        />
-      </View> )
-  } else { //if route is provided in the props, interactive list
-
-    const listData = props.list.map((l) => ({key: l}));
-    const navigator = useNavigation();
-
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={listData}
-          renderItem={({item}) =>
-          <Text
-          style={styles.activityListText}
-          onPress={() => { navigator.navigate(props.route, {activity: item.key}) }}>
-          {item.key}
-          </Text>}
-        />
-      </View> )
-
-
-  }
-
+/*----------A basic standard for list components----------*/
+/* Motivated by scroll component generically passing text as a prop */
+function BasicListItem(props) {
+    return <Text {...props}> {props.text} </Text>;
 }
 
 
+/*----------A scrollable list with optional on press of elements----------*/
+export function ScrollBox(props) {
+    
+    const listData = props.list.map((l) => ({key: l}));
+    const ItemComponent = props.component || BasicListItem;
+
+    return (
+        <View style={[styles.container, props.style]}>
+            <FlatList
+                data={listData}
+                renderItem={({item}) => 
+                    <ItemComponent 
+                        style={[styles.activityListText, props.itemStyles]}
+                        onPress={
+                            () => {
+                                if(props.onPress)
+                                    props.onPress(item)
+                            }
+                        }
+                        text={item.key}
+                    />
+                    
+                }
+            />
+        </View>
+    );
+
+}
+
+/*----------Component Instance of scrollbox specific to activities----------*/
+export function ActivityBox(props) {
+    const navigation = useNavigation();
+    const toActivity = (item) => {
+        navigation.navigate("Activity", {activity: item.key})
+    }
+    return (
+        <ScrollBox {...props} onPress={toActivity} style={{
+            borderColor: Colors.backAuxiliary, borderWidth: 3, borderRadius: 20
+        }} />
+    );
+}
 
 /*----------Thin divider element----------*/
 export function Separator() {
