@@ -39,7 +39,7 @@ function BasicListItem(props) {
 function SwipableListItem(props) {
 
     const [activeRowKey, setActiveRowKey] = useState(null);
-
+    const imagePath = (props.src) ? ImageSources[props.src] : null;
 
     const swipeSettings = {
       autoClose: true,
@@ -54,7 +54,12 @@ function SwipableListItem(props) {
       right: [
         {
           onPress: props.onPress,
-          text: 'Delete', type: 'delete'
+          text: 'Delete',//, type: 'delete',
+          component:(
+            <View style={styles.swipeoutButton}>
+              <Image source={imagePath} style={styles.image}/>
+            </View>
+          )
         }
       ],
       rowId: props.index,
@@ -93,6 +98,7 @@ export function ScrollBox(props) {
                           text={item.key}
                           ItemKey={item.key}
                           index={item.index}
+                          src = 'x'
                       />
 
                 }
@@ -110,7 +116,7 @@ export function ActivityBox(props) {
     }
     return (
         <ScrollBox {...props} onPress={toActivity} style={{
-            width:200,borderColor: Colors.backAuxiliary, borderWidth: 3, borderRadius: 20
+            width:200,borderColor: Colors.backAuxiliary, borderWidth: 3
         }} />
     );
 }

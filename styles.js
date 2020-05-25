@@ -112,4 +112,20 @@ export default StyleSheet.create({
         alignItems: "flex-start",
         justifyContent: "center",
     },
+
+    swipeoutButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        backgroundColor: 'red',
+
+    },
+
+    image: {
+      width: 15,
+      height: 15,
+      resizeMode: 'contain',
+      backgroundColor: 'red'
+    }
 });
