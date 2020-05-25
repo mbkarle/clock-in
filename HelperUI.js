@@ -6,6 +6,7 @@ import { Text, View, TouchableOpacity, Alert, Image, TextInput, FlatList } from 
 import styles, {Colors, width} from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
 import Datastore from 'react-native-local-mongodb';
+import Swipeout from 'react-native-swipeout';
 
 
 /*----------Images----------*/
@@ -35,28 +36,65 @@ function BasicListItem(props) {
 }
 
 
+function SwipableListItem(props) {
+
+    const [activeRowKey, setActiveRowKey] = useState(null);
+
+
+    const swipeSettings = {
+      autoClose: true,
+      onClose: (secId, rowId, direction) => {
+          if (activeRowKey != null) {
+              setActiveRowKey(null);
+          }
+      },
+      onOpen: (secId, rowId, direction) => {
+          setActiveRowKey(props.ItemKey);
+      },
+      right: [
+        {
+          onPress: props.onPress,
+          text: 'Delete', type: 'delete'
+        }
+      ],
+      rowId: props.index,
+      sectionId: 1,
+      buttonWidth:60
+    };
+
+    return(
+      <Swipeout {...swipeSettings} backgroundColor={'transparent'}>
+          <Text style = {styles.activityListText} onPress={props.onPress}> {props.text}</Text>
+      </Swipeout>
+    );
+
+}
+
 /*----------A scrollable list with optional on press of elements----------*/
 export function ScrollBox(props) {
-    
-    const listData = props.list.map((l) => ({key: l}));
-    const ItemComponent = props.component || BasicListItem;
+
+    const listData = props.list.map((l, index) => ({key: l, index:index}));
+    const ItemComponent = BasicListItem;
+
 
     return (
-        <View style={[styles.container, props.style]}>
+        <View style={[styles.container, props.style, {flex:1, flexDirection:'row'}]}>
             <FlatList
                 data={listData}
-                renderItem={({item}) => 
-                    <ItemComponent 
-                        style={[styles.activityListText, props.itemStyles]}
-                        onPress={
-                            () => {
-                                if(props.onPress)
-                                    props.onPress(item)
-                            }
-                        }
-                        text={item.key}
-                    />
-                    
+                renderItem={({item}) =>
+                      <SwipableListItem
+                          style={[styles.activityListText, props.itemStyles]}
+                          onPress={
+                              () => {
+                                  if(props.onPress)
+                                      props.onPress(item)
+                              }
+                          }
+                          text={item.key}
+                          ItemKey={item.key}
+                          index={item.index}
+                      />
+
                 }
             />
         </View>
@@ -72,7 +110,7 @@ export function ActivityBox(props) {
     }
     return (
         <ScrollBox {...props} onPress={toActivity} style={{
-            borderColor: Colors.backAuxiliary, borderWidth: 3, borderRadius: 20
+            width:200,borderColor: Colors.backAuxiliary, borderWidth: 3, borderRadius: 20
         }} />
     );
 }
@@ -95,7 +133,7 @@ export function SingleInput(props) {
     const [value, setValue] = useState(placeholder);
     const [clearOnFocus, setClearOnFocus] = useState(true);
     const [borderColor, setBorderColor] = useState(Colors.backAuxiliary);
-    
+
     return (
         <TextInput
             style={[styles.singleInput, {borderColor: borderColor}]}
@@ -108,7 +146,7 @@ export function SingleInput(props) {
             onFocus={() => setBorderColor(Colors.secondary)}
             onBlur={() => {
                 setBorderColor(Colors.backAuxiliary);
-                if(value == "") 
+                if(value == "")
                     setValue(placeholder);
             }}
             value={value}
@@ -119,7 +157,7 @@ export function SingleInput(props) {
             {...props}
         />
    );
-    
+
 }
 
 /*==========General Buttons==========*/

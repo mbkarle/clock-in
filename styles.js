@@ -86,7 +86,7 @@ export default StyleSheet.create({
       padding: 10,
       alignItems: 'center',
       color: Colors.backgroundText,
-      fontSize: 30,
+      fontSize: 20,
     },
 
     floatRight: {
