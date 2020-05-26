@@ -80,7 +80,9 @@ export default function Profile({ navigation }) {
                     <Title text={myName}/>
                 </View>
 
-                <ActivityBox list={activities}/>
+                <ActivityBox
+                list={activities}
+                />
 
                 <PrimaryButton
                     text="Print user database to console"
