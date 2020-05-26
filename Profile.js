@@ -6,9 +6,10 @@ import { Text, View, Alert } from 'react-native';
 import styles, {Colors} from "./styles.js";
 import ErrorBoundary from 'react-native-error-boundary';
 import {
-    Separator, usersdb, PrimaryButton, DisplayWrapper, AnchoredButton, ActivityBox, activitiesdb, SwipableScrollBox
+    Separator, PrimaryButton, DisplayWrapper, AnchoredButton, ActivityBox, Loadable, SwipableScrollBox
 } from "./HelperUI.js";
 import { useFocusEffect } from '@react-navigation/native';
+import { activitiesdb, usersdb } from "./DB.js";
 
 function Title(props){
     return (
@@ -20,21 +21,15 @@ function Title(props){
 }
 
 const initProfile = () => {
-    usersdb.loadDatabase( (err) => {
-        if(err)
-            throw err;
+    let doc = {
+        name: "Matt",
+        tags: [],
+        activities: []
+    }
 
-        doc = {
-            name: "Matt",
-            tags: [],
-            activities: []
-        }
+    usersdb.insert(doc);
 
-        usersdb.insert(doc);
-
-        Alert.alert("Initialized User info")
-
-    });
+    Alert.alert("Initialized User info")
 }
 
 export default function Profile({ navigation }) {
@@ -42,27 +37,20 @@ export default function Profile({ navigation }) {
     const [activities, setActivities] = useState([]);
     const [nameVisible, setNameVisible] = useState(false);
     const [myName, setMyName] = useState(null);
+    const [isLoaded, setLoaded] = useState(false);
 
     const toActivity = () => { //go to activity screen
         navigation.navigate("Activity");
     }
 
     const populateProfile = () => { //perform db calls for user information
-        usersdb.loadDatabase( (err) => {
-            if(err)
-                throw err;
+        usersdb.getOne({}, (user) => {
+            if(user == null)
+                return initProfile();
 
-            usersdb.findOne({}, (err, user) => {
-                if(err)
-                    throw err;
-
-                if(user == null)
-                    return initProfile();
-
-                setMyName(user.name);
-                loadActivities(user.activities, setActivities);
-            });
-        })
+            setMyName(user.name);
+            loadActivities(user.activities, setActivities, () => setLoaded(true));
+        });
     }
 
     useFocusEffect( // better than use effect because adds new activity to list when user adds one
@@ -75,14 +63,13 @@ export default function Profile({ navigation }) {
 
     return (
         <ErrorBoundary>
+        <Loadable loaded={isLoaded}>
             <View style={styles.container}>
                 <View style={[styles.container, {marginTop: 0}]}>
                     <Title text={myName}/>
                 </View>
 
-                <ActivityBox
-                list={activities}
-                />
+                <ActivityBox list={activities} />
 
                 <PrimaryButton
                     text="Print user database to console"
@@ -90,51 +77,51 @@ export default function Profile({ navigation }) {
                     onPress={printUser}
                 />
 
+                <PrimaryButton
+                    text="Print activity database to console"
+                    style={{backgroundColor: Colors.error, borderRadius: 10, marginTop: 50}}
+                    onPress={printActivities}
+                />
+
+
                 <AnchoredButton
                     src="plus"
                     onPress={() => { navigation.navigate("Modal"), {callback: populateProfile} }}
                 />
             </View>
+        </Loadable>
         </ErrorBoundary>
     );
 }
 
-function loadActivities(ids, setActivities) {
-    activitiesdb.loadDatabase( (err) => {
-        if(err) throw err;
+function loadActivities(ids, setActivities, callback) {
+    activitiesdb.get( {_id: {$in: ids}}, (docs) => {
+        names = docs.map( (doc) => doc.name );//optional step to simplify data for now
+        //TODO: decide how much data to pass in navigation or whether activity page should redo call
 
-        activitiesdb.find( {_id : {$in: ids } }, (err, docs) => {
-            if(err) throw err;
-
-            names = docs.map( (doc) => doc.name ); //optional step to simplify data for now
-            //TODO: decide how much data to pass in navigation or whether activity page should redo call
-
-            setActivities(names)
-            console.log("set activities to: " + JSON.stringify(names));
-        });
+        setActivities(names);
+        if(callback)
+            callback();
     });
-
 }
 
-/*----------Helper function to console log user db information----------*/
+/*----------Helper function to console log db information----------*/
+export const printDocs = (docs) => {
+    console.log("DOCS LENGTH: " + docs.length);
+    for(let i = 0; i < docs.length; i++) {
+        console.log("================================");
+        for(let key in docs[i]) {
+            let val = docs[i][key];
+            console.log(key + ": " + JSON.stringify(val) + "\n");
+        }
+        console.log("================================");
+    }
+}
+
 function printUser() {
-    usersdb.loadDatabase( (err) => {
-        if(err) throw err;
+    usersdb.get({}, printDocs);
+}
 
-        usersdb.find({}, (err, docs) => {
-            if(err) throw err;
-
-            console.log("DOCS LENGTH: " + docs.length);
-            for(let i = 0; i < docs.length; i++) {
-                console.log("================================");
-                for(let key in docs[i]) {
-                    let val = docs[i][key];
-                    console.log(key + ": " + JSON.stringify(val) + "\n");
-                }
-                console.log("================================");
-
-            }
-        });
-    });
-
+function printActivities() {
+    activitiesdb.get({}, printDocs)
 }

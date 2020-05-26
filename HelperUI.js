@@ -1,31 +1,21 @@
 /*==========Home of globally useful UI components==========*/
 
 /*----------Imports----------*/
-import React, {useState} from 'react';
-import { Text, View, TouchableOpacity, Alert, Image, TextInput, FlatList } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { Animated, Text, View, TouchableOpacity, Alert, Image, TextInput, FlatList } from 'react-native';
 import styles, {Colors, width} from "./styles.js";
 import { useNavigation } from '@react-navigation/native';
-import Datastore from 'react-native-local-mongodb';
 import Swipeout from 'react-native-swipeout';
 
+import { activitiesdb, usersdb } from "./DB.js";
 
 /*----------Images----------*/
 const ImageSources = {
     home: require("./assets/home.png"),
     plus: require("./assets/plus.png"),
     x: require("./assets/x-icon.png"),
+    loading: require("./assets/loading.png"),
 };
-
-/*==========Database Related Content==========*/
-
-/*----------The default database keys----------*/
-const usersStorageKey = "Users";
-const activitiesStorageKey = "Activities";
-
-/*----------Users Collection----------*/
-export const usersdb = new Datastore({ filename: usersStorageKey });
-export const activitiesdb = new Datastore({ filename: activitiesStorageKey });
-
 
 /*==========Graphic Aids==========*/
 
@@ -64,7 +54,7 @@ function SwipableListItem(props) {
           text: 'Delete',
           component:(
             <View style={styles.swipeoutButton}>
-              <Image source={imagePath} style={styles.image}/>
+              <Image source={imagePath} style={styles.swipeoutImage}/>
             </View>
           ),
           onPress: () => {
@@ -202,6 +192,56 @@ export function SingleInput(props) {
         />
    );
 
+}
+
+/*----------Loading Wrapper----------*/
+export function Loadable({ children, loaded }) {
+    const [contentShown, setContentShown] = useState(true);
+
+    useEffect( () => { //if still not loaded within a second, show loading symbol
+        let timeout = null; 
+        if(!loaded) {
+            timeout = setTimeout( () => {
+                setContentShown(false);
+            }, 1000);
+        }
+
+        return () => {
+            clearTimeout(timeout);
+            setContentShown(true);
+        }
+    }, [loaded]);
+
+
+    return (contentShown) ? <View style={styles.container}>{children}</View> : <Loading />;
+}
+
+/*----------Loading visual----------*/
+function Loading(props) {
+    const [rotate, setRotate] = useState(new Animated.Value(0))
+
+    Animated.loop(
+        Animated.timing(
+            rotate,
+            {
+                toValue: 1,
+                duration: 1000,
+                useNativeDriver:true,
+            }
+        )
+    ).start();
+
+    const rotation = rotate.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg']
+    });
+
+    return (
+        <View style={styles.container}>
+            <Animated.Image source={ImageSources["loading"]}
+                   style={[styles.loadingIcon, {transform: [{rotate: rotation}]}]} />
+        </View>
+    );
 }
 
 /*==========General Buttons==========*/

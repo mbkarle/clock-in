@@ -4,7 +4,8 @@
 import React, {useState} from 'react';
 import { Text, View, Alert } from 'react-native';
 import styles, {Colors} from './styles.js';
-import { HomeButton, Separator, SingleInput, PrimaryButton, usersdb, activitiesdb } from "./HelperUI.js";
+import { HomeButton, Separator, SingleInput, PrimaryButton} from "./HelperUI.js";
+import { activitiesdb, usersdb } from "./DB.js";
 
 export default function Modal({ route, navigation }) {
 
@@ -39,33 +40,15 @@ export default function Modal({ route, navigation }) {
 }
 
 function addActivity(name, navigation) {
-    activitiesdb.loadDatabase( (err) => {
-        if(err) throw err;
-
-        let activity = {
-            name: name,
-            accumulatedTime: 0,
-            startTime: -1,
-            isActive: false,
-            tags: []
-        }
-
-        activitiesdb.insert(activity, (err, res) => {
-            if(err) throw err;
-            pushActivityToUser(res._id, navigation);
-        });
+    let activity = {
+        name: name,
+        accumulatedTime: 0,
+        startTime: -1,
+        isActive: false,
+        tags: []
+    }
+    activitiesdb.upload(activity, (res) => {
+        usersdb.push({}, "activities", res._id, () => navigation.navigate("Profile") )
     });
 }
 
-function pushActivityToUser(id, navigation) {
-    usersdb.loadDatabase( (err) => {
-        if(err) throw err;
-
-        usersdb.update({}, { $push: { activities: id } }, (err) => {
-            if(err) throw err;
-            console.log("added activity to user")
-            //activity creation is complete at this point, refresh profile
-            navigation.navigate("Profile");
-        });
-    });
-}

@@ -122,10 +122,25 @@ export default StyleSheet.create({
 
     },
 
-    image: {
+    swipeoutImage: {
       width: 15,
       height: 15,
       resizeMode: 'contain',
       backgroundColor: 'red'
-    }
+    },
+    loadingIcon: {
+        width: 200,
+        height: 200,
+    },
+
+    loadView: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        alignSelf: "stretch",
+        position: "absolute",
+        left: 0,
+        top: 0,
+        backgroundColor: "rgba(10, 10, 10, 125)",
+    },
 });
