@@ -1,12 +1,12 @@
 import React from 'react';
 import { Alert } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
-import styles, {Colors} from "./styles.js";
-import Profile from "./Profile.js";
-import Activity from "./Activity.js";
+import styles, {Colors} from "./src/styles.js";
+import Profile from "./src/Profile.js";
+import Activity from "./src/Activity.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Modal from "./Modal.js";
+import Modal from "./src/Modal.js";
 
 
 
