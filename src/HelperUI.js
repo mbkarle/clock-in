@@ -6,6 +6,7 @@ export const ImageSources = {
     plus: require("../assets/plus.png"),
     x: require("../assets/x-icon.png"),
     loading: require("../assets/loading.png"),
+    whitePlus: require("../assets/whitePlus.png"),
 };
 
 /*==========List Components==========*/
@@ -33,4 +34,3 @@ export {
     AnchoredButton,
     HomeButton,
 } from "./helperUI/Buttons.js";
-

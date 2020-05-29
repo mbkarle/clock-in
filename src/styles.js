@@ -118,16 +118,34 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        backgroundColor: 'red',
+        backgroundColor: 'transparent',
 
+    },
+
+    deleteSwipeoutButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        backgroundColor: Colors.error,
+
+    },
+
+    addGoalSwipeoutButton: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        backgroundColor: Colors.secondary,
     },
 
     swipeoutImage: {
       width: 15,
       height: 15,
       resizeMode: 'contain',
-      backgroundColor: 'red'
+      backgroundColor: 'transparent'
     },
+
     loadingIcon: {
         width: 200,
         height: 200,

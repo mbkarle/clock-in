@@ -6,13 +6,38 @@ import { Text, View, Image, FlatList } from 'react-native';
 import styles, {Colors, width} from "../styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { activitiesdb, usersdb } from "../DB.js";
-import { ImageSources } from "../HelperUI.js";
+import { ImageSources, DisplayWrapper } from "../HelperUI.js";
 import Swipeout from 'react-native-swipeout';
 
 /*----------A basic standard for list components----------*/
 /* Motivated by scroll component generically passing text as a prop */
 function BasicListItem(props) {
     return <Text {...props}> {props.text} </Text>;
+}
+
+export function DropDownListItem(props) {
+
+  const [visibility, setVisibility] = useState (false);
+
+  const wrappedElement = (
+      <View>
+        <Text style = {[styles.activityListText, {padding:2}]}>Example drop down text</Text>
+      </View>
+  )
+
+  const toggleDropDown = () => {
+      setVisibility(!visibility);
+      console.log(visibility);
+  }
+
+  return (
+    <View style = {styles.container}>
+      <View style = {styles.container}>
+        <Text style = {styles.activityListText} onPress={() => {toggleDropDown()}}> {props.text}</Text>
+      </View>
+      <DisplayWrapper children = {wrappedElement} visibility = {visibility}/>
+    </View>
+  )
 }
 
 /*------------Component that can be swiped in flatlist------------*/
@@ -26,7 +51,8 @@ function SwipableListItem(props) {
 
     const [activeRowKey, setActiveRowKey] = useState(null);
     const [height, setHeight] =useState(40);
-    const imagePath = (props.src) ? ImageSources[props.src] : null;
+    const image1Path = (props.src1) ? ImageSources[props.src1] : null;
+    const image2Path = (props.src2) ? ImageSources[props.src2] : null;
 
 
     const swipeSettings = { //params for <swipeout>
@@ -43,14 +69,25 @@ function SwipableListItem(props) {
         {
           text: 'Delete',
           component:(
-            <View style={styles.swipeoutButton}>
-              <Image source={imagePath} style={styles.swipeoutImage}/>
+            <View style={styles.addGoalSwipeoutButton}>
+              <Image source={image2Path} style={styles.swipeoutImage}/>
             </View>
           ),
           onPress: () => {
-            DeleteActivityElement(props.text)
-            setHeight(0);
+
           }
+        },
+        {
+          text:'Goal',
+          component: (
+            <View style={styles.deleteSwipeoutButton}>
+              <Image source={image1Path} style={styles.swipeoutImage}/>
+            </View>
+          ),
+          onPress: () => {
+              DeleteActivityElement(props.text)
+              setHeight(0);
+            }
         }
       ],
       rowId: props.index,
@@ -88,9 +125,8 @@ export function DeleteActivityElement(activityName) {
 
   usersdb.loadDatabase( (err) => {
       if(err) throw err;
-      //note this is hardcoded as I am unsure of how usersdb is to be used in future, should be
-      //easy change however
-      usersdb.update({ name: 'Matt' }, { $pull: { activities: id } }, {}, function () {
+      //note this is hardcoded for a single user in userdatabase
+      usersdb.update({}, { $pull: { activities: id } }, {}, function () {
     });
   });
 
@@ -117,7 +153,8 @@ export function ScrollBox(props) {
                           text={item.key}
                           ItemKey={item.key}
                           index={item.index}
-                          src = 'x'
+                          src1 = 'x'
+                          src2 = 'whitePlus'
                       />
                 }
             />
