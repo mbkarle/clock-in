@@ -70,7 +70,6 @@ export default function Profile({ navigation }) {
                 </View>
 
                 <ActivityBox list={activities} />
-
                 <PrimaryButton
                     text="Print user database to console"
                     style={{backgroundColor: Colors.error, borderRadius: 10, marginTop: 50}}

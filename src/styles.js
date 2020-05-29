@@ -27,6 +27,12 @@ export default StyleSheet.create({
         alignSelf: "center",
         fontWeight: 'bold',
     },
+    timeHeader: {
+        marginTop:100,
+        color: Colors.backgroundText,
+        fontSize: 25,
+        fontWeight: "bold",
+    },
     modalTitle: {
         marginTop: 50,
         color: Colors.backgroundText,

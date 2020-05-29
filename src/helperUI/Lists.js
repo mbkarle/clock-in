@@ -131,7 +131,6 @@ export function DeleteActivityElement(activityName) {
   });
 
 }
-
 /*----------A scrollable list with optional on press of elements----------*/
 export function ScrollBox(props) {
 

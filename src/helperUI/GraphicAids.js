@@ -5,6 +5,11 @@ import React, {useState, useEffect} from 'react';
 import { Animated, Text, View, Image, TextInput, } from 'react-native';
 import styles, {Colors, width} from "../styles.js";
 import { activitiesdb, usersdb } from "../DB.js";
+import TimePicker from 'react-native-simple-time-picker';
+import {Picker} from 'react-native';//'@react-native-community/picker';
+//Picker should be imported from react-native-community/pciker but this
+//isn't supported in expo yet. Picker from react-native is depricated
+//but can be used for now until community package is supported/
 
 /*----------Thin divider element----------*/
 export function Separator() {
@@ -17,6 +22,70 @@ export function DisplayWrapper({ children, visibility }) {
     return (
         (visibility) ? <View>{children}</View> : null
     );
+}
+
+
+/*----------Scrolling Item Containing Hours and Minutes----------*/
+export function TimePick(props) {
+    const [hours,setHours] = useState(0);
+    const [minutes,setMinutes] =useState(0);
+
+    var minutesTags = [];
+    var hoursTags = [];
+
+    var i;
+
+    for (i = 0; i < 60; i++) {
+        minutesTags.push(i.toString())
+    }
+
+    for (i = 0; i < 24; i++) {
+        hoursTags.push(i.toString())
+    }
+
+    console.log(minutesTags)
+
+    return(
+      <View>
+        <Text style={[{justifyContent:'center',}, styles.timeHeader]}>Hours : Mins</Text>
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+              <View style={{backgroundColor:'transparent',flex:1,justifyContent:'center'}}>
+                <View style = {{alignItems:'flex-end'}}>
+                  <Picker
+                  selectedValue={hours}
+                  style={{width:100,justifyContent:'center'}}
+                  itemStyle={{color:'#FFF'}}
+                  onValueChange={(itemValue, itemIndex) => {
+                    setHours(itemValue)
+                  }}>
+                    {hoursTags.map((item, index) => {
+                        return (<Picker.Item label={item} value={index} key={index}/>)
+                    })}
+
+
+                  </Picker>
+                </View>
+              </View>
+
+              <View style={{backgroundColor:'transparent',flex:1,justifyContent:'center'}}>
+                <Picker
+                selectedValue={minutes}
+                style={{width:100,justifyContent:'center'}}
+                itemStyle={{color:'#FFF'}}
+                onValueChange={(itemValue, itemIndex) => {
+                  setMinutes(itemValue)
+                }}>
+                  {minutesTags.map((item, index) => {
+                      return (<Picker.Item label={item} value={index} key={index}/>)
+                  })}
+
+
+
+                </Picker>
+              </View>
+        </View>
+      </View>
+  );
 }
 
 export function SingleInput(props) {

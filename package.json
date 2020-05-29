@@ -11,19 +11,20 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-        "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
-      ],
-      "collectCoverage": true,
-      "collectCoverageFrom": [
-        "**/*.{js,jsx}",
-        "!**/coverage/**",
-        "!**/node_modules/**",
-        "!**/babel.config.js",
-        "!**/jest.setup.js"
-      ]
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/node_modules/**",
+      "!**/babel.config.js",
+      "!**/jest.setup.js"
+    ]
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.6",
+    "@react-native-community/picker": "^1.6.1",
     "@react-navigation/native": "^5.3.0",
     "@react-navigation/stack": "^5.3.3",
     "expo": "~37.0.3",
@@ -36,6 +37,7 @@
     "react-native-reanimated": "~1.7.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
+    "react-native-simple-time-picker": "^0.2.0",
     "react-native-swipe-list-view": "^3.1.0",
     "react-native-swipeout": "^2.3.6",
     "react-native-web": "~0.11.7"
