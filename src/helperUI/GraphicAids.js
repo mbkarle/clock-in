@@ -27,9 +27,12 @@ export function DisplayWrapper({ children, visibility }) {
 
 /*----------Scrolling Item Containing Hours and Minutes----------*/
 export function TimePick(props) {
-    const [hours,setHours] = useState(0);
-    const [minutes,setMinutes] =useState(0);
+    const [hours,setHours] = [props.hours,props.setHours];
+    const [minutes,setMinutes] =[props.minutes, props.setMinutes];
 
+
+
+    //for use generating picker items JSX
     var minutesTags = [];
     var hoursTags = [];
 
@@ -42,8 +45,6 @@ export function TimePick(props) {
     for (i = 0; i < 24; i++) {
         hoursTags.push(i.toString())
     }
-
-    console.log(minutesTags)
 
     return(
       <View>
@@ -78,8 +79,6 @@ export function TimePick(props) {
                   {minutesTags.map((item, index) => {
                       return (<Picker.Item label={item} value={index} key={index}/>)
                   })}
-
-
 
                 </Picker>
               </View>

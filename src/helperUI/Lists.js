@@ -53,7 +53,7 @@ function SwipableListItem(props) {
     const [height, setHeight] =useState(40);
     const image1Path = (props.src1) ? ImageSources[props.src1] : null;
     const image2Path = (props.src2) ? ImageSources[props.src2] : null;
-
+    const navigation = useNavigation();
 
     const swipeSettings = { //params for <swipeout>
       autoClose: true,
@@ -74,7 +74,7 @@ function SwipableListItem(props) {
             </View>
           ),
           onPress: () => {
-
+              navigation.navigate("Modal", {mode:"TimePick", activity:props.ItemKey});
           }
         },
         {

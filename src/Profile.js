@@ -85,7 +85,7 @@ export default function Profile({ navigation }) {
 
                 <AnchoredButton
                     src="plus"
-                    onPress={() => { navigation.navigate("Modal"), {callback: populateProfile} }}
+                    onPress={() => { navigation.navigate("Modal", {mode:"Activity"}), {callback: populateProfile} }}
                 />
             </View>
         </Loadable>
