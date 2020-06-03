@@ -1,13 +1,15 @@
 /*==========List/Scrollable Related Component Content==========*/
 
 /*----------Imports----------*/
-import React, {useState, useEffect} from 'react';
-import { Text, View, Image, FlatList } from 'react-native';
+import React, {useState, useEffect, Component} from 'react';
+import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import styles, {Colors, width} from "../styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { activitiesdb, usersdb } from "../DB.js";
 import { ImageSources, DisplayWrapper } from "../HelperUI.js";
 import Swipeout from 'react-native-swipeout';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+
 
 /*----------A basic standard for list components----------*/
 /* Motivated by scroll component generically passing text as a prop */
@@ -39,6 +41,61 @@ export function DropDownListItem(props) {
     </View>
   )
 }
+
+/*--------------New Swipeable list componant using different library---------*/
+
+function NewSwipe(props) {
+
+    const [height, setHeight] =useState(40);
+
+    const RightActions = (props) => {
+      const image1Path = ImageSources["x"];
+      const image2Path = ImageSources["whitePlus"];
+      const navigation = useNavigation();
+
+
+      return (
+      <View style = {{flexDirection:'row'}}>
+        <View style={styles.new2AddGoalSwipeoutButton}>
+          <TouchableOpacity onPress = {() => {
+            navigation.navigate("Modal", {mode:"TimePick", activity:props.ItemKey})
+            }}>
+            <View>
+              <Image source={image2Path} style={styles.swipeoutImage}/>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.new2DeleteSwipeoutButton}>
+          <TouchableOpacity onPress = {() => {
+            DeleteActivityElement(props.text);
+            props.setHeight(0);
+          }}>
+            <View>
+              <Image source={image1Path} style={styles.swipeoutImage}/>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    );
+    }
+
+    return(
+      <Swipeable
+        renderRightActions={() => <RightActions
+          text = {props.text}
+          ItemKey = {props.ItemKey}
+          setHeight = {setHeight}
+          />}
+      >
+        <View style = {{backgroundColor:'#121212', height:height}}>
+          <Text style = {styles.activityListText} onPress={props.onPress}> {props.text}</Text>
+        </View>
+      </Swipeable>
+    );
+}
+
 
 /*------------Component that can be swiped in flatlist------------*/
 //TODO
@@ -97,7 +154,9 @@ function SwipableListItem(props) {
 
     return(
       <Swipeout {...swipeSettings} backgroundColor={'transparent'} style = {{height:height}}>
+        <View>
           <Text style = {styles.activityListText} onPress={props.onPress}> {props.text}</Text>
+        </View>
       </Swipeout>
     );
 
@@ -135,7 +194,7 @@ export function DeleteActivityElement(activityName) {
 export function ScrollBox(props) {
 
     const listData = props.list.map((l, index) => ({key: l, index:index}));
-    const ItemComponent = props.component || SwipableListItem;
+    const ItemComponent = props.component || NewSwipe;//SwipableListItem;
     return (
         <View style={[styles.container, props.style, {flex:1, flexDirection:'row'}]}>
             <FlatList

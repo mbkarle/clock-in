@@ -145,6 +145,23 @@ export default StyleSheet.create({
         backgroundColor: Colors.secondary,
     },
 
+    new2AddGoalSwipeoutButton: {
+        width:40,
+        height:40,
+        alignItems:'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.secondary,
+    },
+
+    new2DeleteSwipeoutButton: {
+        width:40,
+        height:40,
+        alignItems:'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.error,
+
+    },
+
     swipeoutImage: {
       width: 15,
       height: 15,
