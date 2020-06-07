@@ -23,6 +23,7 @@ export {
     SingleInput,
     Loadable,
     TimePick,
+    CustomLineChart,
 } from "./helperUI/GraphicAids.js";
 
 

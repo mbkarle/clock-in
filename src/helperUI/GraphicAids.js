@@ -1,8 +1,8 @@
 /*==========Graphic Aid Components==========*/
 
 /*----------Imports----------*/
-import React, {useState, useEffect} from 'react';
-import { Animated, Text, View, Image, TextInput, } from 'react-native';
+import React, {useState, useEffect } from 'react';
+import { Animated, Text, View, Image, TextInput, Dimensions } from 'react-native';
 import styles, {Colors, width} from "../styles.js";
 import { activitiesdb, usersdb } from "../DB.js";
 import TimePicker from 'react-native-simple-time-picker';
@@ -10,6 +10,7 @@ import {Picker} from 'react-native';//'@react-native-community/picker';
 //Picker should be imported from react-native-community/pciker but this
 //isn't supported in expo yet. Picker from react-native is depricated
 //but can be used for now until community package is supported/
+import { LineChart } from 'react-native-chart-kit';
 
 /*----------Thin divider element----------*/
 export function Separator() {
@@ -165,6 +166,57 @@ function Loading(props) {
         <View style={styles.container}>
             <Animated.Image source={ImageSources["loading"]}
                    style={[styles.loadingIcon, {transform: [{rotate: rotation}]}]} />
+        </View>
+    );
+}
+
+export function CustomLineChart(props) {
+
+    return (
+        <View>
+            <LineChart
+                data={{
+                labels: ["January", "February", "March", "April", "May", "June"],
+                datasets: [
+                    {
+                    data: [
+                        Math.random() * 100,
+                        Math.random() * 100,
+                        Math.random() * 100,
+                        Math.random() * 100,
+                        Math.random() * 100,
+                        Math.random() * 100
+                    ]
+                    }
+                ]
+                }}
+                width={Dimensions.get("window").width} 
+                height={200}
+                yAxisLabel="$"
+                yAxisSuffix="k"
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={{
+                backgroundColor: "#e26a00",
+                backgroundGradientFrom: "#fb8c00",
+                backgroundGradientTo: "#ffa726",
+                decimalPlaces: 2, // optional, defaults to 2dp
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                style: {
+                    borderRadius: 16
+                },
+                propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#ffa726"
+                }
+                }}
+                bezier //changes from smooth to dot to dot connections
+                style={{
+                marginVertical: 8,
+                borderRadius: 16
+                }}
+            />
         </View>
     );
 }
