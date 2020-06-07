@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import { Animated, Text, View, TouchableOpacity, Alert } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import styles, {Colors} from "./styles.js";
-import { Separator, HomeButton, CustomLineChart } from "./HelperUI.js";
+import { Separator, HomeButton, CustomLineChart, GoalRings } from "./HelperUI.js";
 import {activitiesdb} from "./DB.js";
 import {printDocs} from "./Profile.js";
 

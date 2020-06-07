@@ -10,7 +10,7 @@ import {Picker} from 'react-native';//'@react-native-community/picker';
 //Picker should be imported from react-native-community/pciker but this
 //isn't supported in expo yet. Picker from react-native is depricated
 //but can be used for now until community package is supported/
-import { LineChart } from 'react-native-chart-kit';
+import { LineChart, ProgressChart } from 'react-native-chart-kit';
 
 /*----------Thin divider element----------*/
 export function Separator() {
@@ -172,34 +172,32 @@ function Loading(props) {
 
 export function CustomLineChart(props) {
 
+    //props.data = list of y coordinates
+    //props.labels = list of string labels for each props.data element
+    //ensure length of props.data = length of props.labels
+
+    //width and height currently set for testing purposes
+
     return (
         <View>
             <LineChart
                 data={{
-                labels: ["January", "February", "March", "April", "May", "June"],
+                labels: props.labels,
                 datasets: [
                     {
-                    data: [
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100
-                    ]
+                    data: props.data
                     }
                 ]
                 }}
-                width={Dimensions.get("window").width} 
-                height={200}
-                yAxisLabel="$"
-                yAxisSuffix="k"
+                width={defaultSettings(props.width, Dimensions.get("window").width)} 
+                height={defaultSettings(props.hieght,200)}
+                yAxisLabel= {defaultSettings(props.yAxisLabel, "")}
+                yAxisSuffix= {defaultSettings(props.yAxisSuffix, "hr")}
                 yAxisInterval={1} // optional, defaults to 1
                 chartConfig={{
-                backgroundColor: "#e26a00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
+                backgroundGradientFrom: (defaultSettings(props.backgroundGradientFrom, "#fb8c00")), 
+                backgroundGradientTo: (defaultSettings(props.backgroundGradientTo, "#ffa726")), 
+                decimalPlaces: 1, // optional, defaults to 2dp
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
@@ -208,7 +206,7 @@ export function CustomLineChart(props) {
                 propsForDots: {
                     r: "6",
                     strokeWidth: "2",
-                    stroke: "#ffa726"
+                    stroke: (defaultSettings(props.dotColor, "#ffa726"))
                 }
                 }}
                 bezier //changes from smooth to dot to dot connections
@@ -219,4 +217,34 @@ export function CustomLineChart(props) {
             />
         </View>
     );
+}
+
+export function GoalRings(props) {
+
+
+    return (
+        <ProgressChart
+            data={{
+                labels: props.labels,
+                data: props.data, //given as decimals representing percentage ring filled
+            }} 
+            width={defaultSettings(props.width, Dimensions.get("window").width)} 
+            height={defaultSettings(props.hieght,220)}
+            strokeWidth={16}
+            radius={defaultSettings(props.radius, 32)}
+            chartConfig={{
+                backgroundGradientFrom: (defaultSettings(props.backgroundGradientFrom, "#fb8c00")), 
+                backgroundGradientTo: (defaultSettings(props.backgroundGradientTo, "#ffa726")), 
+                decimalPlaces: 1, // optional, defaults to 2dp
+                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
+            }}
+            hideLegend={defaultSettings(props.hideLegend, false)}
+        />
+
+    );
+}
+
+function defaultSettings(possibleInput, defaultValue) {
+    return (possibleInput ? possibleInput : defaultValue);
 }

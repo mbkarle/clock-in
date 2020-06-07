@@ -24,6 +24,7 @@ export {
     Loadable,
     TimePick,
     CustomLineChart,
+    GoalRings,
 } from "./helperUI/GraphicAids.js";
 
 
