@@ -2,7 +2,7 @@
 
 /*----------Imports----------*/
 import React, {useState, useEffect} from 'react';
-import { Text, View, Alert } from 'react-native';
+import { Text, View, Alert, Button } from 'react-native';
 import styles, {Colors} from "./styles.js";
 import ErrorBoundary from 'react-native-error-boundary';
 import {
@@ -65,24 +65,15 @@ export default function Profile({ navigation }) {
         <ErrorBoundary>
         <Loadable loaded={isLoaded}>
             <View style={styles.container}>
+                <Button 
+                    onPress={() => {navigation.navigate("Test")}}
+                    title="To Test Page"
+                />
                 <View style={[styles.container, {marginTop: 0}]}>
                     <Title text={myName}/>
                 </View>
 
                 <ActivityBox list={activities} />
-                <PrimaryButton
-                    text="Print user database to console"
-                    style={{backgroundColor: Colors.error, borderRadius: 10, marginTop: 50}}
-                    onPress={printUser}
-                />
-
-                <PrimaryButton
-                    text="Print activity database to console"
-                    style={{backgroundColor: Colors.error, borderRadius: 10, marginTop: 50}}
-                    onPress={printActivities}
-                />
-
-
                 <AnchoredButton
                     src="plus"
                     onPress={() => { navigation.navigate("Modal", {mode:"Activity"}), {callback: populateProfile} }}
@@ -117,10 +108,3 @@ export const printDocs = (docs) => {
     }
 }
 
-function printUser() {
-    usersdb.get({}, printDocs);
-}
-
-function printActivities() {
-    activitiesdb.get({}, printDocs)
-}

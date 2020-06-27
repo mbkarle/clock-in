@@ -4,6 +4,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 import styles, {Colors} from "./src/styles.js";
 import Profile from "./src/Profile.js";
 import Activity from "./src/Activity.js";
+import TestPage from "./src/TestPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Modal from "./src/Modal.js";
@@ -31,6 +32,7 @@ function MainStackScreen() {
         >
             <MainStack.Screen name="Activity" component={Activity} />
             <MainStack.Screen name="Profile" component={Profile} />
+            <MainStack.Screen name="Test" component={TestPage} />
         </MainStack.Navigator>
     );
 }
