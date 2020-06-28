@@ -184,4 +184,27 @@ export default StyleSheet.create({
         top: 0,
         backgroundColor: "rgba(10, 10, 10, 125)",
     },
+    hr: {
+        height:3,
+        color: Colors.secondary,
+        width: width
+    },
+    accordianRow: { 
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        height:60,
+        paddingLeft:30,
+        paddingRight:20,
+        alignItems:'center',
+        backgroundColor: "transparent", //TODO alter for better styling
+    },
+    accordianText:{ 
+        fontSize: 20,
+        fontWeight:'bold',
+        color: "white",
+    },
+    accordianDropdown:{ 
+        backgroundColor: "transparent",
+        padding:15,
+    }
 });

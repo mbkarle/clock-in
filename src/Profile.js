@@ -72,8 +72,9 @@ export default function Profile({ navigation }) {
                 <View style={[styles.container, {marginTop: 0}]}>
                     <Title text={myName}/>
                 </View>
-
-                <ActivityBox list={activities} />
+                <View style = {{flex:5}}>
+                    <ActivityBox list={activities} />
+                </View>
                 <AnchoredButton
                     src="plus"
                     onPress={() => { navigation.navigate("Modal", {mode:"Activity"}), {callback: populateProfile} }}

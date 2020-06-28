@@ -2,14 +2,14 @@
 
 /*----------Imports----------*/
 import React, {useState, useEffect, Component} from 'react';
-import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, Image, FlatList, TouchableOpacity, LayoutAnimation } from 'react-native';
 import styles, {Colors, width} from "../styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { activitiesdb, usersdb } from "../DB.js";
 import { ImageSources, DisplayWrapper } from "../HelperUI.js";
 import Swipeout from 'react-native-swipeout';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 /*----------A basic standard for list components----------*/
 /* Motivated by scroll component generically passing text as a prop */
@@ -194,9 +194,9 @@ export function DeleteActivityElement(activityName) {
 export function ScrollBox(props) {
 
     const listData = props.list.map((l, index) => ({key: l, index:index}));
-    const ItemComponent = props.component || NewSwipe;//SwipableListItem;
+    const ItemComponent = props.component || Accordian;//NewSwipe;//SwipableListItem;
     return (
-        <View style={[styles.container, props.style, {flex:1, flexDirection:'row'}]}>
+        <View style={[props.style, {flex:1, flexDirection:'row'}]}>
             <FlatList
                 data={listData}
                 renderItem={({item}) =>
@@ -229,7 +229,37 @@ export function ActivityBox(props) {
     }
     return (
         <ScrollBox {...props} onPress={toActivity} style={{
-            width:200,borderColor: Colors.backAuxiliary, borderWidth: 3
+            width:width,borderColor: Colors.backAuxiliary, borderWidth: 3 
         }} />
     );
 }
+
+
+export function Accordian(props) {
+
+    const [data, setData] = useState(props.data);
+    const [expanded, setExpanded] = useState(false);
+
+    const Expand = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        setExpanded(!expanded)
+    }
+
+    return(
+      <View>
+          <TouchableOpacity style={styles.accordianRow} onPress={()=>Expand()}>
+              <Text style ={styles.accordianText}>{props.text}</Text>
+              <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
+          </TouchableOpacity>
+          <View style={styles.hr}/>
+          {
+              expanded &&
+              <View style={styles.accordianDropdown}>
+                  <Text style = {{color:'white'}}>Example Drop Down loot</Text>    
+              </View>
+          }
+     </View>
+  )
+}
+
+
