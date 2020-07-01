@@ -70,7 +70,7 @@ export default function Profile({ navigation }) {
                     title="To Test Page"
                 />
                 <View style={[styles.container, {marginTop: 0}]}>
-                    <Title text={myName}/>
+                    <Title text={"Activities"}/>
                 </View>
                 <View style = {{flex:5}}>
                     <ActivityBox list={activities} />

@@ -105,7 +105,7 @@ export default StyleSheet.create({
 
     profileTitle: {
         color: Colors.backgroundText,
-        fontSize: 24,
+        fontSize: 30,
     },
 
     singleInput: {
@@ -185,26 +185,29 @@ export default StyleSheet.create({
         backgroundColor: "rgba(10, 10, 10, 125)",
     },
     hr: {
-        height:3,
-        color: Colors.secondary,
-        width: width
+        height:1,
+        backgroundColor: "white",
+        width: width * 0.9
     },
     accordianRow: { 
         flexDirection: 'row',
         justifyContent:'space-between',
-        height:60,
+        height:70,
         paddingLeft:30,
         paddingRight:20,
         alignItems:'center',
         backgroundColor: "transparent", //TODO alter for better styling
     },
     accordianText:{ 
-        fontSize: 20,
+        fontSize: 25,
         fontWeight:'bold',
         color: "white",
     },
     accordianDropdown:{ 
+        flexDirection:"row",
+        alignItems:"center",
         backgroundColor: "transparent",
-        padding:15,
+        paddingTop:20,
+        paddingLeft:30,
     }
 });

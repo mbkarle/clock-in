@@ -6,10 +6,11 @@ import { Text, View, Image, FlatList, TouchableOpacity, LayoutAnimation } from '
 import styles, {Colors, width} from "../styles.js";
 import { useNavigation } from '@react-navigation/native';
 import { activitiesdb, usersdb } from "../DB.js";
-import { ImageSources, DisplayWrapper } from "../HelperUI.js";
+import { ImageSources, DisplayWrapper, AnchoredButton } from "../HelperUI.js";
 import Swipeout from 'react-native-swipeout';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { PrimaryButton } from './Buttons.js';
 
 /*----------A basic standard for list components----------*/
 /* Motivated by scroll component generically passing text as a prop */
@@ -229,7 +230,7 @@ export function ActivityBox(props) {
     }
     return (
         <ScrollBox {...props} onPress={toActivity} style={{
-            width:width,borderColor: Colors.backAuxiliary, borderWidth: 3 
+            width:width
         }} />
     );
 }
@@ -239,26 +240,81 @@ export function Accordian(props) {
 
     const [data, setData] = useState(props.data);
     const [expanded, setExpanded] = useState(false);
-
+    const [visible, setVisible] = useState(true)
     const Expand = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         setExpanded(!expanded)
     }
 
+
+    const navigation = useNavigation();
+
     return(
+      (visible) ?
       <View>
-          <TouchableOpacity style={styles.accordianRow} onPress={()=>Expand()}>
+          <View style={[styles.accordianRow]}>
+            <TouchableOpacity onPress={props.onPress}>
               <Text style ={styles.accordianText}>{props.text}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>Expand()}>
               <Icon name={expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={'white'} />
-          </TouchableOpacity>
-          <View style={styles.hr}/>
+            </TouchableOpacity>
+          </View>
+          <View style={{justifyContent:"center", alignItems:"center"}}>
+            <View style={styles.hr}/>
+          </View>
           {
               expanded &&
               <View style={styles.accordianDropdown}>
-                  <Text style = {{color:'white'}}>Example Drop Down loot</Text>    
+                  <View style ={{flex:1, alignItems:"center"}}>
+                    <PrimaryButton 
+                      align="left" 
+                      src="whitePlus"
+                      bottomMargin={20}
+                      style = {{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: Colors.secondary,
+                          borderRadius: 45,
+                          padding: 10,
+                          width:45,
+                          height:45,
+                      }}
+                      imageStyle= {{
+                        width: 20,
+                        height: 20,
+                      }}
+                      onPress = {() => {
+                        navigation.navigate("Modal", {mode:"TimePick", activity:props.ItemKey})}}
+                    />
+                  </View>
+                  <View style={{flex:1, alignItems:"center"}}>
+                    <PrimaryButton 
+                      align="left" 
+                      src="x"
+                      bottomMargin={20}
+                      style = {{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: "#DC143C",
+                          borderRadius: 45,
+                          padding: 10,
+                          width:45,
+                          height:45
+                      }}
+                      imageStyle= {{
+                        width: 20,
+                        height: 20,
+                      }}
+                      onPress = {() => {
+                        DeleteActivityElement(props.text)
+                        setVisible(false) }}
+                    />
+                  </View> 
+                  
               </View>
           }
-     </View>
+     </View> : null 
   )
 }
 

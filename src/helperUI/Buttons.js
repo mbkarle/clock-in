@@ -15,6 +15,7 @@ export function PrimaryButton(props) {
     //uses above booleans along with display wrappers to support either images or text
 
     const style = (props.style) ? [styles.primaryButton, props.style] : styles.primaryButton;
+    const imageStyle = (props.imageStyle) ? props.imageStyle : styles.primaryButtonIcon;
 
     return (
         <TouchableOpacity
@@ -22,7 +23,7 @@ export function PrimaryButton(props) {
             onPress={props.onPress}
         >
             <DisplayWrapper visibility={hasImage}>
-                <Image style={styles.primaryButtonIcon} source={imagePath} />
+                <Image style={imageStyle} source={imagePath} />
             </DisplayWrapper>
 
             <DisplayWrapper visibility={hasText}>
@@ -35,8 +36,9 @@ export function PrimaryButton(props) {
 export function AnchoredButton(props) {
     const horizAlign = props.align || "right";
     const marginKey = (horizAlign == "right") ? "marginLeft" : "marginRight";
+    const bottomMargin = props.bottomMargin ? props.bottomMargin : 35
     return (
-        <View style={[styles.anchoredView, {[marginKey]: width - 134}]}>
+        <View style={[styles.anchoredView, {[marginKey]: width - 134, marginBottom: bottomMargin}]}>
             <PrimaryButton {...props} />
         </View>
     );
